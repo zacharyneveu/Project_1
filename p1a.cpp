@@ -50,6 +50,7 @@ int main()
 
       cout << endl << "Best solution" << endl;
       k.printSolution();
+	  cout << "done" << endl;
       
    }    
 
@@ -72,7 +73,18 @@ int main()
  */
 void exhaustiveKnapsack(knapsack &k, int t)
 {
-	double num_subsets = pow(2, k.getNumObjects());
-	cout << "number of subsets: " << num_subsets << endl;
+	unsigned int num_objs = k.getNumObjects();
+	unsigned int num_subsets = pow(2, num_objs);
+	// cout << "number of subsets: " << num_subsets << endl;
 	cout << "This is exhausting" << endl;
+	for (unsigned int j = 0; j < num_subsets; ++j) {
+		for (unsigned int i = 0; i < num_objs; ++i) {
+			bool to_select = num_objs & (1<<i);
+			if(to_select)
+				k.select(i);
+			else
+				k.unSelect(i);
+		}	
+		k.getCost();
+	}
 }

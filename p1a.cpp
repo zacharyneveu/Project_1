@@ -18,6 +18,7 @@ using namespace std;
 #include "knapsack.h"
 
 void exhaustiveKnapsack(knapsack &k, int t);
+bool increment(knapsack &k);
 
 int main()
 {
@@ -46,7 +47,7 @@ int main()
       cout << "Reading knapsack instance" << endl;
       knapsack k(fin);
 
-      exhaustiveKnapsack(k, 600);
+      exhaustiveKnapsack(k, 3);
 
       cout << endl << "Best solution" << endl;
       k.printSolution();
@@ -73,18 +74,38 @@ int main()
  */
 void exhaustiveKnapsack(knapsack &k, int t)
 {
+	clock_t startTime;
+	startTime = clock();
+
+	knapsack best_k = k;
+	do {
+		int val = k.getValue();
+		if(val > best_k.getValue() && k.getCost() < k.getCostLimit())
+			best_k = k;
+		// Set time to run here
+		float diff = (float) (clock() - startTime) / CLOCKS_PER_SEC;
+		if (diff > t)
+		{
+			break;
+		}
+	} while(increment(k));
+	k = best_k;
+}
+
+bool increment(knapsack &k)
+{
 	unsigned int num_objs = k.getNumObjects();
-	unsigned int num_subsets = pow(2, num_objs);
-	// cout << "number of subsets: " << num_subsets << endl;
-	cout << "This is exhausting" << endl;
-	for (unsigned int j = 0; j < num_subsets; ++j) {
-		for (unsigned int i = 0; i < num_objs; ++i) {
-			bool to_select = num_objs & (1<<i);
-			if(to_select)
-				k.select(i);
-			else
-				k.unSelect(i);
-		}	
-		k.getCost();
-	}
+	for (int i = 0; i < num_objs; ++i) {
+		bool is_set = k.isSelected(i);
+		// If already set, reset and go to next bit to carry
+		if (is_set) {
+			k.unSelect(i);
+		}
+		// if not set, then set and break loop
+		else {
+			k.select(i);
+			return true;
+		}
+	}	
+	return false;
 }

@@ -8,12 +8,16 @@
 #include <queue>
 #include <vector>
 #include <time.h>
+#include <math.h>
+#include <stack>
 
 using namespace std;
 
 #include "d_except.h"
 #include "d_matrix.h"
 #include "knapsack.h"
+
+void exhaustiveKnapsack(knapsack &k, int t);
 
 int main()
 {
@@ -59,3 +63,16 @@ int main()
    }
 }
 
+
+/*
+ * param k: knapsack instance
+ * param t: limit on total cost
+ * Strategy: each item is either selected or un-selected, 0 or 1. Use a simple binary counter to iterate over all
+ * possible combinations
+ */
+void exhaustiveKnapsack(knapsack &k, int t)
+{
+	double num_subsets = pow(2, k.getNumObjects());
+	cout << "number of subsets: " << num_subsets << endl;
+	cout << "This is exhausting" << endl;
+}

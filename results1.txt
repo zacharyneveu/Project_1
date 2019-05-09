@@ -1,0 +1,7 @@
+# Results
+
+## Knapsack
+The exhaustive knapsack algorithm implemented successfully iterates over all possible solutions. The implementation could be significantly improved by implementing a more complex strategy for ordering the combinations. Starting with no items selected means that time is very likely to be wasted selecting far too few items in most cases.
+
+## Graph Coloring
+The exhaustive graph coloring algorithm implemented is also successful at iterating over all possible solutions. This algorithm would benefit from an improved iterator. Specifically, the current iterator starts with all nodes set to color 0. It then sets the first node to color 1, then instead of moving on to the second node, it sets the first node to color 2, 3, ... up to the number of colors. This problem is a holdover from the strategy used with the binary decisions from Knapsack and could be improved greatly.

@@ -22,55 +22,63 @@ bool increment(knapsack &k);
 
 int main()
 {
-   char x;
-   ifstream fin;
-   stack <int> moves;
-   string fileName;
-   
-   // Read the name of the file from the keyboard or
-   // hard code it here for testing.
-   
-   // fileName = "knapsack16.input";
+	char x;
+	ifstream fin;
+	stack <int> moves;
+	string fileName;
 
-   cout << "Enter filename" << endl;
-   cin >> fileName;
-   
-   fin.open(fileName.c_str());
-   if (!fin)
-   {
-      cerr << "Cannot open " << fileName << endl;
-      exit(1);
-   }
+	// Read the name of the file from the keyboard or
+	// hard code it here for testing.
 
-   try
-   {
-      cout << "Reading knapsack instance" << endl;
-      knapsack k(fin);
+	// fileName = "knapsack16.input";
 
-      exhaustiveKnapsack(k, 3);
+	cout << "Enter filename" << endl;
+	cin >> fileName;
 
-      cout << endl << "Best solution" << endl;
-      k.printSolution();
-	  cout << "done" << endl;
-      
-   }    
+	int t=10; // default to 10 seconds
+	cout << "Enter time to run" << endl;
+	cin >> t;
 
-   catch (indexRangeError &ex) 
-   { 
-      cout << ex.what() << endl; exit(1);
-   }
-   catch (rangeError &ex)
-   {
-      cout << ex.what() << endl; exit(1);
-   }
+	fin.open(fileName.c_str());
+	if (!fin)
+	{
+		cerr << "Cannot open " << fileName << endl;
+		exit(1);
+	}
+
+	try
+	{
+		cout << "Reading knapsack instance" << endl;
+		knapsack k(fin);
+
+		exhaustiveKnapsack(k, t);
+
+		cout << endl << "Best solution" << endl;
+		k.printSolution();
+		cout << "done" << endl;
+
+	}    
+
+	catch (indexRangeError &ex) 
+	{ 
+		cout << ex.what() << endl; exit(1);
+	}
+	catch (rangeError &ex)
+	{
+		cout << ex.what() << endl; exit(1);
+	}
 }
 
 
 /*
- * param k: knapsack instance
- * param t: limit on total cost
- * Strategy: each item is either selected or un-selected, 0 or 1. Use a simple binary counter to iterate over all
- * possible combinations
+ * Exhaustively searches through all possible patterns of items in knapsack and
+ * tracks best items
+ *
+ * Strategy: each item is either selected or un-selected, 0 or 1. 
+ * Use a simple binary counter to iterate over all possible combinations
+ *
+ * @param k: knapsack instance
+ * @param t: limit on total cost
  */
 void exhaustiveKnapsack(knapsack &k, int t)
 {
@@ -82,6 +90,7 @@ void exhaustiveKnapsack(knapsack &k, int t)
 		int val = k.getValue();
 		if(val > best_k.getValue() && k.getCost() < k.getCostLimit())
 			best_k = k;
+
 		// Set time to run here
 		float diff = (float) (clock() - startTime) / CLOCKS_PER_SEC;
 		if (diff > t)
@@ -92,6 +101,11 @@ void exhaustiveKnapsack(knapsack &k, int t)
 	k = best_k;
 }
 
+/*
+ * Creates a new selection of items in the given knapsack instance.
+ *
+ * @param k: knapsack instance to modify
+ */
 bool increment(knapsack &k)
 {
 	unsigned int num_objs = k.getNumObjects();

@@ -118,7 +118,7 @@ int main()
 
 		cout << "Least Conflicts: " << least_conflicts << endl;
 
-		// cout << get(color, g);
+		cout << "done" << endl;
 	}
 	catch (...)
 	{
@@ -127,12 +127,21 @@ int main()
 	}
 }
 
+/*
+ * Exhaustively searches through coloring patterns for a graph.
+ * Starts with all nodes set to color 0. 
+ *
+ * @param g: a graph to color
+ * @param numColors: number of colors to use when filling the graph
+ * @param t: time in seconds to run the algorithm
+ */
 int exhaustiveColoring(Graph &g, int numColors, int t)
 {
 	clock_t start = clock();
 	Graph best_g = g;
 	int least_conflicts = num_edges(g);
-	while(increment(g, numColors)) {
+
+	do{
 		// Check if new graph is best	
 		int conflicts = getColorConflicts(g);
 		if(conflicts == 0)
@@ -150,10 +159,17 @@ int exhaustiveColoring(Graph &g, int numColors, int t)
 			g = best_g;
 			break;
 		}
-	}
+	} while(increment(g, numColors));
+
 	return least_conflicts;
 }
 
+/*
+ * Counts the number of conflicts in a colored graph.
+ * Runtime: O(n)
+ *
+ * @param g: a colored graph
+ */
 int getColorConflicts(Graph &g)
 {
 	unsigned int n_cons = 0;
@@ -171,6 +187,16 @@ int getColorConflicts(Graph &g)
 	return n_cons;
 }
 
+/*
+ * Tries a new colorization of a graph
+ *
+ * @param g: a colored graph to modify
+ * @param numColors: the maximum number of colors to try when coloring
+ *
+ * TODO: find a better way to iterate. currently wasting a lot of time iterating
+ * through all possible colors on first nodes while other nodes don't ever get 
+ * their colors changed.
+ */
 bool increment(Graph &g, int numColors)
 {
 	unsigned int num_verts = num_vertices(g);

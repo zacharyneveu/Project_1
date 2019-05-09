@@ -26,4 +26,7 @@ for f in infiles:
         p.sendline(sys.argv[1])
     except:
         p.sendline('10')
-    p.interact()
+
+    p.expect('done')
+    with open('output/'+f[:-6]+'.output', 'w+') as of:
+        of.write(p.before)

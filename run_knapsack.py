@@ -13,16 +13,20 @@ Runs knapsack on all input files
 import sys, os
 import pexpect
 
-infiles = [x for x in os.listdir('instances') if x.startswith('knapsack')]
+infiles = [x for x in os.listdir('instances') if x.startswith('knapsack') and x.endswith('.input')]
+infiles = sorted(infiles, key=lambda x: int(x[8:-6]))
 
 for f in infiles:
     print(f)
     p = pexpect.spawnu('./p1a.out')
     p.expect('Enter filename')
     p.sendline('instances/'+f)
-    p.interact()
-    # Give the program 11 minutes to give a result (timer should kill it at minute 10)
-    #p.expect("done")
-    #print(p.before)
-    #p.read()
-    #p.close()
+    p.expect('Enter time to run')
+    try:
+        p.sendline(sys.argv[1])
+    except:
+        p.sendline('10')
+
+    p.expect('done')
+    with open('output/'+f[:-6]+'.output', 'w+') as of:
+        of.write(p.before)

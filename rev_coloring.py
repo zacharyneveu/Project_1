@@ -14,8 +14,7 @@ import sys, os
 import pexpect
 
 infiles = [x for x in os.listdir('instances') if (x.startswith('color') and x.endswith('.input'))]
-infiles = sorted(infiles, key=lambda x: int(x[5:-6].split('-')[0]))
-infiles = [x for x in infiles if int(x[5:-6].split('-')[0]) > 24]
+infiles = sorted(infiles, key=lambda x: int(x[5:-6].split('-')[0]), reverse=True)
 
 for f in infiles:
     print(f)

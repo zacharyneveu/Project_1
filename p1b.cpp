@@ -205,7 +205,6 @@ bool increment(Graph &g, int numColors)
 	pair<Graph::vertex_iterator, Graph::vertex_iterator> vItrRange = vertices(g);
 	for (Graph::vertex_iterator vItr= vItrRange.first; vItr != vItrRange.second; ++vItr)
 	{
-		cout << numColors << endl;
 		// If 10 colors, colors are [1:9]
 		if(g[*vItr].color == numColors - 1)
 		{

@@ -1,7 +1,7 @@
 
 600
 Reading graph
-Num Colors: 6
+Num Colors: 7
 Num nodes: 96
 Num edges: 756
 
@@ -15,7 +15,7 @@ Node 7 Color: 1
 Node 8 Color: 1
 Node 9 Color: 1
 Node 10 Color: 1
-Node 11 Color: 1
+Node 11 Color: 0
 Node 12 Color: 0
 Node 13 Color: 0
 Node 14 Color: 0
@@ -101,4 +101,4 @@ Node 93 Color: 0
 Node 94 Color: 0
 Node 95 Color: 0
 Node 96 Color: 0
-Number of Conflicts: 490
+Number of Conflicts: 512

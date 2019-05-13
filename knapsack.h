@@ -148,7 +148,19 @@ ostream &operator<<(ostream &ostr, const knapsack &k)
 
 void knapsack::printSolution()
 // Prints out the solution.
-{
+{  ofstream output;
+   output.open("knapsack" + to_string(getNumObjects()) + ".output");
+   output << "Best solution" << endl;
+   output << "------------------------------------------------" << endl;
+   output << "Total value: " << getValue() << endl;
+   output << "Total cost: " << getCost() << endl << endl;
+   for (int i = 0; i < getNumObjects(); i++){
+      if (isSelected(i)) {
+	      output << i << "  " << getValue(i) << " " << getCost(i) << endl;
+      }
+   }
+   output.close();
+   /*
    cout << "------------------------------------------------" << endl;
 
    cout << "Total value: " << getValue() << endl;
@@ -159,7 +171,8 @@ void knapsack::printSolution()
       if (isSelected(i))
 	 cout << i << "  " << getValue(i) << " " << getCost(i) << endl;
 
-   cout << endl;
+   cout << endl; */
+
 }
 
 ostream &operator<<(ostream &ostr, vector<bool> v)

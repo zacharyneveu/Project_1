@@ -4,8 +4,8 @@ Reading knapsack instance
 
 Best solution
 ------------------------------------------------
-Total value: 13411
-Total cost: 11111
+Total value: 13836
+Total cost: 11436
 
 0  197 97
 1  101 1
@@ -30,4 +30,5 @@ Total cost: 11111
 20  654 554
 21  689 589
 22  775 675
+23  425 325
 

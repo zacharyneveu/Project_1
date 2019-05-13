@@ -22,11 +22,13 @@ for f in infiles:
     p.expect('Enter filename')
     p.sendline('instances/'+f)
     p.expect('Enter time to run')
+    t = 10
     try:
-        p.sendline(sys.argv[1])
+        t = int(sys.argv[1])
     except:
-        p.sendline('10')
+        pass
+    p.sendline(str(t))
 
-    p.expect('done')
+    p.expect('done', timeout=t)
     with open('output/'+f[:-6]+'.output', 'w+') as of:
         of.write(p.before)

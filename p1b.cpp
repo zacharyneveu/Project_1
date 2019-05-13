@@ -7,6 +7,7 @@
 #include <time.h>
 
 #include <boost/graph/adjacency_list.hpp>
+#include <boost/graph/graphviz.hpp>
 
 #define LargeValue 99999999
 
@@ -24,6 +25,7 @@ typedef graph_traits<Graph>::vertex_descriptor VertexDescriptor;
 int exhaustiveColoring(Graph &g, int numColors, int t);
 bool increment(Graph &g, int numColors);
 int getColorConflicts(Graph &g);
+void printSolution(Graph &g);
 
 struct VertexProperties
 {
@@ -116,8 +118,7 @@ int main()
 
 		int least_conflicts = exhaustiveColoring(g, numColors, t);
 
-		cout << "Least Conflicts: " << least_conflicts << endl;
-
+		printSolution(g);
 		cout << "done" << endl;
 	}
 	catch (...)
@@ -204,16 +205,36 @@ bool increment(Graph &g, int numColors)
 	pair<Graph::vertex_iterator, Graph::vertex_iterator> vItrRange = vertices(g);
 	for (Graph::vertex_iterator vItr= vItrRange.first; vItr != vItrRange.second; ++vItr)
 	{
+		cout << numColors << endl;
+		// If 10 colors, colors are [1:9]
 		if(g[*vItr].color == numColors - 1)
 		{
 			g[*vItr].color = 0;
+			// cout << "Resetting Color" << endl;
 		}
 		else
 		{
 			g[*vItr].color += 1;
+			// cout << "New color: " << g[*vItr].color << endl;
 			return true;
 		}
 	}
 	return false;
 }
 
+
+void printSolution(Graph &g)
+{
+	int count = 1;
+	pair<Graph::vertex_iterator, Graph::vertex_iterator> vItrRange = vertices(g);
+	for (Graph::vertex_iterator vItr= vItrRange.first; vItr != vItrRange.second; ++vItr)
+	{
+		cout << "Node "<< count << " Color: " << g[*vItr].color << endl;
+		count++;
+	}
+
+	// ofstream outf("op.gv");
+	// write_graphviz(outf, g);
+	
+	cout << "Number of Conflicts: " << getColorConflicts(g) << endl;
+}

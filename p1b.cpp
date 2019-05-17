@@ -23,6 +23,7 @@ struct EdgeProperties;
 typedef adjacency_list<vecS, vecS, bidirectionalS, VertexProperties, EdgeProperties> Graph;
 typedef graph_traits<Graph>::vertex_descriptor VertexDescriptor;
 int exhaustiveColoring(Graph &g, int numColors, int t);
+int greedyColoring(Graph &g, int numColors, int t);
 bool increment(Graph &g, int numColors);
 int getColorConflicts(Graph &g);
 void printSolution(Graph &g);
@@ -116,7 +117,8 @@ int main()
 		cout << "Num edges: " << num_edges(g) << endl;
 		cout << endl;
 
-		int least_conflicts = exhaustiveColoring(g, numColors, t);
+		//int least_conflicts = exhaustiveColoring(g, numColors, t);
+		int least_conflicts = greedyColoring(g, numColors, t);
 
 		printSolution(g);
 		cout << "done" << endl;
@@ -236,4 +238,61 @@ void printSolution(Graph &g)
 	// write_graphviz(outf, g);
 	
 	cout << "Number of Conflicts: " << getColorConflicts(g) << endl;
+}
+
+/*
+ * Uses a simple greedy algorithm to solve the graph coloring problem
+ */
+int greedyColoring(Graph &g, int numColors, int t)
+{
+	unsigned int num_verts = num_vertices(g);
+
+	// Iterate over all vertices of graph
+	pair<Graph::vertex_iterator, Graph::vertex_iterator> vItrRange = vertices(g);
+	for (Graph::vertex_iterator vItr= vItrRange.first; vItr != vItrRange.second; ++vItr)
+	{
+		// cout << "Node: " << *vItr << endl;
+		//  For each node, cycle over all possible colors
+		for (auto color = 0; color < numColors; color++) 
+		{
+			// cout << "Trying color: " << color << endl;
+			auto adj = adjacent_vertices(*vItr, g);
+			auto inv_adj = inv_adjacent_vertices(*vItr,g);
+
+			// For each color try, check neighbors, and skip this color if one of them is the same
+			bool works = true;
+
+			/* TODO: simplify to only operate over a single set
+			 * BGL provides adjacent_vertices() and inv_adjacent_vertices(), but I can't
+			 * seem to find a function that gets both at once
+			 */
+			for (auto v: make_iterator_range(adj))
+			{
+				// cout << "Checking "<<*vItr <<"->"<<v<<endl;
+				if(g[v].color == color)
+				{
+					// cout << "Failed" << endl;
+					works = false;
+					break;
+				}
+			}
+			for (auto v: make_iterator_range(inv_adj))
+			{
+				// cout << "Checking "<<*vItr <<"->"<<v<<endl;
+				if(g[v].color == color)
+				{
+					// cout << "Failed" << endl;
+					works = false;
+					break;
+				}
+			}
+			if(works)
+			{
+				// cout << "Setting node "<<*vItr << " color: " << color << endl;
+				g[*vItr].color = color;
+				break;
+			}
+		}
+	}
+	return getColorConflicts(g);
 }

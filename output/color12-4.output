@@ -1,20 +1,20 @@
 
-600
+10
 Reading graph
 Num Colors: 4
 Num nodes: 12
 Num edges: 21
 
-Node 1 Color: 0
-Node 2 Color: 3
-Node 3 Color: 0
+Node 1 Color: 1
+Node 2 Color: 2
+Node 3 Color: 1
 Node 4 Color: 2
-Node 5 Color: 2
-Node 6 Color: 0
-Node 7 Color: 1
+Node 5 Color: 1
+Node 6 Color: 3
+Node 7 Color: 2
 Node 8 Color: 1
-Node 9 Color: 1
+Node 9 Color: 2
 Node 10 Color: 1
-Node 11 Color: 1
+Node 11 Color: 3
 Node 12 Color: 0
 Number of Conflicts: 0

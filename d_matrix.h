@@ -28,21 +28,24 @@ class matrix
 		const vector<T>& operator[](int i) const;
 			// version for constant objects
 
-      int rows() const;
-			// return number of rows
-      int cols() const;
-			// return number of columns
+		int rows() const;
+				// return number of rows
+		int cols() const;
+				// return number of columns
 
-      void resize(int numRows, int numCols);
-			// modify the matrix size.
-			// Postcondition: the matrix has size numRows x numCols.
-			// any new elements are filled with the default value of type T
+		void resize(int numRows, int numCols);
+				// modify the matrix size.
+				// Postcondition: the matrix has size numRows x numCols.
+				// any new elements are filled with the default value of type T
+
+		void fillMatrix(vector <T> indexVector, vector <T> ratioVector); // populates matrix
+		void sortByRatio(); // sorts matrix by ratio
 
 	private:
-      int nRows, nCols;
+      	int nRows, nCols;
 			// number of rows and columns
 
-      vector<vector<T> > mat;
+      	vector<vector<T> > mat;
 			// matrix is implemented as nRows vectors (rows),
 			// each having nCols elements (columns)
 };
@@ -108,6 +111,32 @@ void matrix<T>::resize(int numRows, int numCols)
 	// resize each row to have nCols columns
 	for (i=0; i < nRows; i++)
 		mat[i].resize(nCols);
+}
+
+// Populate matrix with index and ratios of knapsack objects
+template <typename T>
+void matrix<T>::fillMatrix(vector <T> indices, vector <T> ratios) {
+	// resize matrix, # of rows = number of knapsack objects, # of cols = 2
+	resize(indices.size(), 2);
+	for(int i = 0; i < rows(); i++) {
+		mat[i][0] = indices[i]; // first column of matrix contains indices
+		mat[i][1] = ratios[i]; // second column of matrix contains ratios
+	}
+}
+
+// Sorts matrix by value/cost ratio of knapsack object and keeps track of indices
+template <typename T>
+void matrix<T>::sortByRatio() {
+	int temp;
+	// Iterate through matrix
+	for (int i = 0; i < rows() - 1; i++) {
+		temp = i;
+		for (int j = i+1; j < rows(); j++) {
+			if (mat[j][1] > mat[temp][1]) // checks if comparison object is larger than current object
+				temp = j;
+		}
+		mat[temp].swap(mat[i]); // swap objects if ratio of comparison object > current object
+	}
 }
 
 #endif	// MATRIX_CLASS

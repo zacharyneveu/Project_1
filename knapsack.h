@@ -16,6 +16,7 @@ class knapsack
       void select(int);
       void unSelect(int);
       bool isSelected(int) const;
+      vector <float> getKnapsackVector(int i); // returns a vector from knapsackMatrix
 
    private:
       int numObjects;
@@ -25,12 +26,17 @@ class knapsack
       vector<bool> selected;
       int totalValue;
       int totalCost;
+      vector<float> index; // vector used to store indices of knapsack objects
+      vector<float> ratio; // vector used to store value/cost ratios of knapsack objects
+      matrix<float> knapsackMatrix; // matrix used to store index and ratio vectors
+
 };
 
 knapsack::knapsack(ifstream &fin)
 // Construct a new knapsack instance using the data in fin.
 {
-   int n, b, j, v, c;
+   int n, b, j;
+   float v, c; // initialized as floats to obtain value/cost ratio as float
    
    fin >> n;  // read the number of objects
    fin >> b;  // read the cost limit
@@ -41,10 +47,14 @@ knapsack::knapsack(ifstream &fin)
    value.resize(n);
    cost.resize(n);
    selected.resize(n);
+   index.resize(n); 
+   ratio.resize(n);
    
    for (int i = 0; i < n; i++)
    {
       fin >> j >> v >> c;
+      index[j] = j; 
+      ratio[j] = v / c; // ratio of knapsack object is value / cost
       value[j] = v;
       cost[j] = c;
       unSelect(j);
@@ -52,6 +62,9 @@ knapsack::knapsack(ifstream &fin)
 
    totalValue = 0;
    totalCost = 0;
+
+   knapsackMatrix.fillMatrix(index, ratio); // fill matrix with index and ratio vectors
+   knapsackMatrix.sortByRatio(); // sort knapsackMatrix by value/cost ratio of objects
 }
 
 knapsack::knapsack(const knapsack &k)
@@ -148,7 +161,20 @@ ostream &operator<<(ostream &ostr, const knapsack &k)
 
 void knapsack::printSolution()
 // Prints out the solution.
-{  ofstream output;
+{  
+   cout << "------------------------------------------------" << endl;
+
+   cout << "Total value: " << getValue() << endl;
+   cout << "Total cost: " << getCost() << endl << endl;
+
+   // Print out objects in the solution
+   for (int i = 0; i < getNumObjects(); i++)
+      if (isSelected(i))
+	 cout << i << "  " << getValue(i) << " " << getCost(i) << endl;
+
+   cout << endl;
+
+   ofstream output;
    output.open("knapsack" + to_string(getNumObjects()) + ".output");
    output << "Best solution" << endl;
    output << "------------------------------------------------" << endl;
@@ -160,18 +186,6 @@ void knapsack::printSolution()
       }
    }
    output.close();
-   /*
-   cout << "------------------------------------------------" << endl;
-
-   cout << "Total value: " << getValue() << endl;
-   cout << "Total cost: " << getCost() << endl << endl;
-
-   // Print out objects in the solution
-   for (int i = 0; i < getNumObjects(); i++)
-      if (isSelected(i))
-	 cout << i << "  " << getValue(i) << " " << getCost(i) << endl;
-
-   cout << endl; */
 
 }
 
@@ -220,4 +234,11 @@ bool knapsack::isSelected(int i) const
 
    return selected[i];
 }
+
+// function that returns a vector containing the index and value/cost ratio
+// for a knapsack object
+vector <float> knapsack::getKnapsackVector(int i) {
+   return knapsackMatrix[i];
+}
+
 

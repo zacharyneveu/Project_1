@@ -19,7 +19,7 @@ infiles = sorted(infiles, key=lambda x: int(x[5:-6].split('-')[0]))
 
 for f in infiles:
     print(f)
-    p = pexpect.spawnu('./p1b.out')
+    p = pexpect.spawnu('./p2b.out')
     p.expect('Enter filename')
     p.sendline('instances/'+f)
     p.expect('Enter time to run')

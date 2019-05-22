@@ -1,4 +1,4 @@
-# Advanced Algorithms Project 1: Knapsack and Graph Coloring
+# Advanced Algorithms Project 2: Knapsack and Graph Coloring Greedy Algorithms
 Zach Neveu & Bobby Ky
 
 # Guidelines
@@ -13,3 +13,11 @@ Zach Neveu & Bobby Ky
 + Code should be properly indented and formatted.
 + To submit your project, zip together all the project files, including header files, needed to compile your code.  Submit your code by uploading the zip file to Blackboard.  Only one student in each group should upload each project.
 + Your programs will be graded based on the completeness and correctness of your code, quality of the design (use of data abstraction and modularity), and how well your code follows project completion guidelines.  
+
+# Running Instructions
+## Coloring
+To run graph coloring on all inputs, simply compile p2b.cpp, then run 
+```
+python run_coloring.py
+```
+This will run the program on each instance, and dump outputs into the outputs folder.

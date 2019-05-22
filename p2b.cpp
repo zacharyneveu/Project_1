@@ -242,6 +242,12 @@ void printSolution(Graph &g)
 
 /*
  * Uses a simple greedy algorithm to solve the graph coloring problem
+ * Strategy: Iterate over all nodes in the graph. For each node, look at all 
+ * adjacent nodes, and set the current number to the lowest color not found in the neighboring nodes. 
+ * If no colors are available to use, then simply leave the node set to color 0.
+ *
+ * @param g: a colored graph to modify
+ * @param numColors: the maximum number of colors to try when coloring
  */
 int greedyColoring(Graph &g, int numColors, int t)
 {
